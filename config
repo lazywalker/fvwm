@@ -105,6 +105,7 @@ ImagePath $[fvwm_icons]:$[fvwm_launchers]:$[fvwm_backgrounds]:+
 DestroyFunc StartFunction
 AddToFunc   StartFunction
 + I Module FvwmPager 0 2
++ I Module FvwmIconMan
 # + I Module FvwmButtons Launchers
 
 Exec exec pkill volumeicon
@@ -176,14 +177,14 @@ AddToFunc MoveToCurrent
 # Function: IconManClick
 #
 # This function is run from FvwmIconMan when the button is clicked.
-# DestroyFunc IconManClick
-# AddToFunc   IconManClick
-# + I ThisWindow (Raised, !Shaded, !Iconic, CurrentPage) Iconify
-# + I TestRc (Match) Break
-# + I ThisWindow WindowShade off
-# + I ThisWindow Iconify off
-# + I ThisWindow Raise
-# + I ThisWindow (AcceptsFocus) FlipFocus
+DestroyFunc IconManClick
+AddToFunc   IconManClick
++ I ThisWindow (Raised, !Shaded, !Iconic, CurrentPage) Iconify
++ I TestRc (Match) Break
++ I ThisWindow WindowShade off
++ I ThisWindow Iconify off
++ I ThisWindow Raise
++ I ThisWindow (AcceptsFocus) FlipFocus
 
 # Function: ToggleTitle
 #
@@ -298,6 +299,9 @@ Style RightPanel !Title, !Borders, !Handles, Sticky, \
 Style ConfirmQuit !Title, PositionPlacement Center, WindowListSkip, Layer 6
 Style FvwmIdent WindowListSkip
 
+Style FvwmIconMan NoTitle, StaysOnTop, Sticky, WindowListSkip, \
+        CirculateSkipIcon, CirculateSkip, HandleWidth 0, BorderWidth 0, \
+        NeverFocus, Layer 1
 ##################################################################
 # 3: Colorsets
 #
@@ -706,8 +710,8 @@ DestroyModuleConfig FvwmPager:*
 # is used as the window list in the panel or taskbar.
 DestroyModuleConfig FvwmIconMan:*
 *FvwmIconMan: UseWinList true
-*FvwmIconMan: ButtonGeometry 120x20
-*FvwmIconMan: ManagerGeometry 1x1
+*FvwmIconMan: ButtonGeometry 300x20
+*FvwmIconMan: ManagerGeometry 10x1+0+0
 *FvwmIconMan: Colorset 10
 *FvwmIconMan: FocusColorset 11
 *FvwmIconMan: IconColorset 14
@@ -721,9 +725,12 @@ DestroyModuleConfig FvwmIconMan:*
 *FvwmIconMan: Action Mouse 0 A ret
 *FvwmIconMan: Action Mouse 1 A sendcommand IconManClick
 *FvwmIconMan: Action Mouse 3 A sendcommand "Menu MenuIconOps"
-*FvwmIconMan: Resolution global
+# global, desk or page
+*FvwmIconMan: Resolution desk
 *FvwmIconMan: Tips needed
 *FvwmIconMan: Sort id
+*FvwmIconMan: Title ""
+#
 
 # FvwmEvent
 #
@@ -809,10 +816,11 @@ Key Down A 4 SnapQuarter
 Key n A 4 SnapTiny
 
 # Move to the edge of the screen
-#Key Left A C4 Move 0 w+0
-#Key Right A C4 Move -0 w+0
-#Key Up A C4 Move w+0 0
-#Key Down A C4 Move w+0 -0
+# Super + Ctrl + arrows
+Key Left A C4 Move 0 w+0
+Key Right A C4 Move -0 w+0
+Key Up A C4 Move w+0 0
+Key Down A C4 Move w+0 -0
 
 # Move to the center of the screen
 Key a A 4 Move 50-50w 50-50w
