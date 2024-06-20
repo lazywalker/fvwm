@@ -33,7 +33,8 @@
 #
 # The following is used in various menus and also sets the terminal
 # that FvwmConsole uses. Change this to your terminal of choice
-InfoStoreAdd terminal urxvt
+# InfoStoreAdd terminal urxvt
+InfoStoreAdd terminal xfce4-terminal
 
 # This is used for "Run Command" and the Meta+Space key-binding
 InfoStoreAdd runcmd "dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'"
@@ -361,7 +362,7 @@ DestroyMenu MenuFvwmRoot
 AddToMenu   MenuFvwmRoot "FVWM3" Title
 + "&Programs%images/icons/programs.png%" Popup MenuPrograms
 + "XDG &Menu%images/icons/apps.png%" Popup XDGMenu
-# + "&Terminal" Exec exec $[infostore.terminal]
++ "&Terminal" Exec exec $[infostore.terminal]
 # Test (x dmenu_run) + "DMENU" Exec exec $[infostore.runcmd]
 + "" Nop
 # + "Terminal" Module FvwmConsole -terminal $[infostore.terminal]
@@ -710,7 +711,7 @@ DestroyModuleConfig FvwmPager:*
 # is used as the window list in the panel or taskbar.
 DestroyModuleConfig FvwmIconMan:*
 *FvwmIconMan: UseWinList true
-*FvwmIconMan: ButtonGeometry 300x20
+*FvwmIconMan: ButtonGeometry *x20
 *FvwmIconMan: ManagerGeometry 10x1+0+0
 *FvwmIconMan: Colorset 10
 *FvwmIconMan: FocusColorset 11
