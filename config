@@ -113,7 +113,7 @@ Exec exec pkill volumeicon
 Exec exec pkill variety
 Exec exec ~/.config/polybar/launch.sh &
 Exec exec feh --bg-fill /usr/share/backgrounds/arcolinux/arco-wallpaper.jpg &
-Exec exec sxhkd -c ~/.config/fvwm3/sxhkd/sxhkdrc &
+Exec exec sxhkd -c $HOME/.fvwm/sxhkd/sxhkdrc &
 Exec exec dex $HOME/.config/autostart/arcolinux-welcome-app.desktop
 Exec exec conky -c $HOME/.config/fvwm3/system-overview &
 Exec exec nm-applet &

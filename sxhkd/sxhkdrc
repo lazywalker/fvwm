@@ -96,7 +96,7 @@ super + v
 
 #alacritty
 super + Return
-    alacritty
+    xfce4-terminal
 
 #Xkill
 super + Escape
