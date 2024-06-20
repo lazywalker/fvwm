@@ -87,7 +87,7 @@ super + t
     urxvt
 
 #Pavucontrol
-super + v
+super + shift + v
     pavucontrol
 
 #Pragha
@@ -95,6 +95,9 @@ super + v
 #    pragha
 
 #alacritty
+super + ctrl + Return
+    alacritty
+
 super + Return
     xfce4-terminal
 
