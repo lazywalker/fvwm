@@ -106,11 +106,12 @@ ImagePath $[fvwm_icons]:$[fvwm_launchers]:$[fvwm_backgrounds]:+
 DestroyFunc StartFunction
 AddToFunc   StartFunction
 + I Module FvwmPager 0 2
-+ I Module FvwmIconMan
+# + I Module FvwmIconMan
 # + I Module FvwmButtons Launchers
 
 Exec exec pkill volumeicon
 Exec exec pkill variety
+Exec exec pkill tint2
 # Exec exec ~/.config/polybar/launch.sh &
 Exec exec feh --bg-fill /usr/share/backgrounds/arcolinux/arco-wallpaper.jpg &
 Exec exec sxhkd -c $HOME/.fvwm/sxhkd/sxhkdrc &
@@ -120,13 +121,13 @@ Exec exec conky -c $HOME/.config/fvwm3/system-overview &
 # Exec exec pamac-tray &
 Exec exec xfce4-power-manager &
 Exec exec numlockx on &
-# Exec exec blueberry-tray &
+Exec exec blueberry-tray &
 Exec exec picom --config $HOME/.config/fvwm3/picom.conf &
 #Exec exec picom
 Exec exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 Exec exec /usr/lib/xfce4/notifyd/xfce4-notifyd &
-#Exec exec tint2 &
-# Exec exec volumeicon &
+Exec exec tint2 &
+Exec exec volumeicon &
 Exec exec xdgmenumaker -f fvwm > ~/.config/fvwm3/xdgmenu
 Exec exec sleep 2 & variety &
 
