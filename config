@@ -246,7 +246,8 @@ Style * EdgeMoveDelay 350, EdgeMoveResistance 350
 # EwmhBaseStruts [left] [right] [top] [bottom]
 # Reserves space along the edge(s) of the Screen that will not
 # be covered when maximizing or placing windows.
-EwmhBaseStruts 0 0 30 0
+# EwmhBaseStruts 0 0 30 0
+EwmhBaseStruts 0 0 0 20
 
 DestroyFunc EWMHActivateWindowFunc
 AddToFunc EWMHActivateWindowFunc I Iconify Off
@@ -293,7 +294,7 @@ Style * BorderColorset 3, HilightBorderColorset 4
 
 # Disable Icons from appearing on desktop.
 # Comment this out or use Style * Icon to get the icons back.
-Style * !Icon
+# Style * !Icon
 
 # Window Specific Styles
 Style RightPanel !Title, !Borders, !Handles, Sticky, \
