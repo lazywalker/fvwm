@@ -116,7 +116,7 @@ Exec exec pkill tint2
 Exec exec feh --bg-fill /usr/share/backgrounds/arcolinux/arco-wallpaper.jpg &
 Exec exec sxhkd -c $HOME/.fvwm/sxhkd/sxhkdrc &
 Exec exec dex $HOME/.config/autostart/arcolinux-welcome-app.desktop
-Exec exec conky -c $HOME/.config/fvwm3/system-overview &
+# Exec exec conky -c $HOME/.config/fvwm3/system-overview &
 # Exec exec nm-applet &
 # Exec exec pamac-tray &
 Exec exec xfce4-power-manager &
@@ -246,14 +246,15 @@ Style * EdgeMoveDelay 350, EdgeMoveResistance 350
 # EwmhBaseStruts [left] [right] [top] [bottom]
 # Reserves space along the edge(s) of the Screen that will not
 # be covered when maximizing or placing windows.
-# EwmhBaseStruts 0 0 30 0
-EwmhBaseStruts 0 0 0 20
+EwmhBaseStruts 0 0 20 0
+# EwmhBaseStruts 0 0 0 20
 
 DestroyFunc EWMHActivateWindowFunc
 AddToFunc EWMHActivateWindowFunc I Iconify Off
 + I Focus
 + I Raise
-+ I WarpToWindow 50 50
+# Will placing to mouse to center of the activated window
+# + I WarpToWindow 50 50
 
 
 # This sets the ClickTime and MoveThreshold used to determine

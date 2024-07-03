@@ -16,10 +16,11 @@ AddToMenu "Accessories"
 + "Archlinux Tweak Tool" Exec /usr/local/bin/archlinux-tweak-tool
 + "Disks" Exec gnome-disks
 + "Keyboard layout viewer" Exec kbd-layout-viewer5
++ "Remmina Remote Control" Exec remmina
 + "Software Token" Exec stoken-gui
 + "Software Token (small)" Exec stoken-gui --small
 + "Variety" Exec variety 
-+ "Vim" Exec xterm -e vim 
+# + "Vim" Exec xterm -e vim 
 + "Xarchiver" Exec xarchiver 
 + "compton" Exec compton
 + "picom" Exec picom
@@ -28,19 +29,20 @@ DestroyMenu "Development"
 AddToMenu "Development"
 + "Development" Title
 + "GitAhead" Exec gitahead
-+ "Meld" Exec meld 
+# + "Meld" Exec meld 
 + "Sublime Text Dev" Exec subl 
 
 DestroyMenu "Graphics"
 AddToMenu "Graphics"
 + "Graphics" Title
-+ "Flameshot" Exec flameshot
+# + "Flameshot" Exec flameshot
 + "Gcolor2" Exec gcolor2
 
 DestroyMenu "Multimedia"
 AddToMenu "Multimedia"
 + "Multimedia" Title
 + "PulseAudio Volume Control" Exec pavucontrol
++ "Amberol Music Player" Exec amberol
 + "Qt V4L2 test Utility" Exec qv4l2
 + "Qt V4L2 video capture utility" Exec qvidcap
 + "SimpleScreenRecorder" Exec simplescreenrecorder --logfile
@@ -52,9 +54,9 @@ AddToMenu "Network"
 + "Avahi SSH Server Browser" Exec /usr/bin/bssh
 + "Avahi VNC Server Browser" Exec /usr/bin/bvnc
 + "Chromium" Exec /usr/bin/chromium 
-+ "Discord" Exec cd /usr/bin ; /usr/bin/discord
+# + "Discord" Exec cd /usr/bin ; /usr/bin/discord
 + "Firefox" Exec /usr/lib/firefox/firefox 
-+ "Telegram Desktop" Exec telegram-desktop -- 
+# + "Telegram Desktop" Exec telegram-desktop -- 
 
 DestroyMenu "Office"
 AddToMenu "Office"
@@ -91,7 +93,7 @@ AddToMenu "System"
 + "Urxvt" Exec urxvt
 + "Thunar File Manager" Exec thunar 
 + "Xfce Terminal" Exec xfce4-terminal
-+ "urxvt" Exec urxvt
-+ "urxvt (client)" Exec urxvtc
-+ "urxvt (tabbed)" Exec urxvt-tabbed
+# + "urxvt" Exec urxvt
+# + "urxvt (client)" Exec urxvtc
+# + "urxvt (tabbed)" Exec urxvt-tabbed
 
