@@ -6,94 +6,106 @@ AddToMenu "xdgmenu"
 + "Multimedia" Popup "Multimedia"
 + "Network" Popup "Network"
 + "Office" Popup "Office"
++ "Other" Popup "Other"
 + "Settings" Popup "Settings"
 + "System" Popup "System"
 
 DestroyMenu "Accessories"
 AddToMenu "Accessories"
 + "Accessories" Title
-+ "ArcoLinux Betterlockscreen" Exec /usr/local/bin/arcolinux-betterlockscreen
-+ "Archlinux Tweak Tool" Exec /usr/local/bin/archlinux-tweak-tool
-+ "Disks" Exec gnome-disks
-+ "Keyboard layout viewer" Exec kbd-layout-viewer5
-+ "Remmina Remote Control" Exec remmina
++ "Arch Linux Tweak Tool" Exec /usr/bin/archlinux-tweak-tool
++ "ArchLinux Betterlockscreen" Exec /usr/bin/archlinux-betterlockscreen
++ "ArcoLinux Conky Toggle" Exec conky-toggle
++ "ArcoLinux Conkyzen" Exec am-conkyzen
++ "Bulk Rename" Exec thunar --bulk-rename 
++ "File Roller" Exec file-roller 
++ "Font Manager" Exec font-manager 
++ "Font Viewer" Exec /usr/lib/font-manager/font-viewer 
++ "Kvantum Manager" Exec kvantummanager
++ "Neovim" Exec xterm -e nvim 
++ "Screenshot" Exec xfce4-screenshooter
++ "Sofirem - Software installer/remover for Arch Linux based systems" Exec /usr/bin/sofirem
 + "Software Token" Exec stoken-gui
 + "Software Token (small)" Exec stoken-gui --small
-+ "Variety" Exec variety 
-# + "Vim" Exec xterm -e vim 
-+ "Xarchiver" Exec xarchiver 
-+ "compton" Exec compton
-+ "picom" Exec picom
++ "USB Image Writer" Exec mintstick -m iso
++ "USB Stick Formatter" Exec mintstick -m format
 
 DestroyMenu "Development"
 AddToMenu "Development"
 + "Development" Title
-+ "GitAhead" Exec gitahead
-# + "Meld" Exec meld 
-+ "Sublime Text Dev" Exec subl 
++ "Sublime Text" Exec /usr/bin/subl 
 
 DestroyMenu "Graphics"
 AddToMenu "Graphics"
 + "Graphics" Title
-# + "Flameshot" Exec flameshot
-+ "Gcolor2" Exec gcolor2
++ "Document Scanner" Exec simple-scan
++ "nomacs" Exec nomacs 
 
 DestroyMenu "Multimedia"
 AddToMenu "Multimedia"
 + "Multimedia" Title
++ "Amberol" Exec amberol 
 + "PulseAudio Volume Control" Exec pavucontrol
-+ "Amberol Music Player" Exec amberol
-+ "Qt V4L2 test Utility" Exec qv4l2
 + "Qt V4L2 video capture utility" Exec qvidcap
-+ "SimpleScreenRecorder" Exec simplescreenrecorder --logfile
-+ "Volume Icon" Exec volumeicon
 
 DestroyMenu "Network"
 AddToMenu "Network"
 + "Network" Title
-+ "Avahi SSH Server Browser" Exec /usr/bin/bssh
-+ "Avahi VNC Server Browser" Exec /usr/bin/bvnc
-+ "Chromium" Exec /usr/bin/chromium 
-# + "Discord" Exec cd /usr/bin ; /usr/bin/discord
-+ "Firefox" Exec /usr/lib/firefox/firefox 
-# + "Telegram Desktop" Exec telegram-desktop -- 
++ "Firefox Web Browser" Exec /usr/lib/firefox/firefox 
++ "Remmina" Exec remmina-file-wrapper 
++ "Telegram Desktop" Exec telegram-desktop -- 
 
 DestroyMenu "Office"
 AddToMenu "Office"
 + "Office" Title
++ "Document Viewer" Exec evince 
 + "WPS 2019" Exec /usr/bin/wps 
 + "WPS PDF" Exec /usr/bin/wpspdf 
 + "WPS Presentation" Exec /usr/bin/wpp 
 + "WPS Spreadsheets" Exec /usr/bin/et 
 + "WPS Writer" Exec /usr/bin/wps 
 
+DestroyMenu "Other"
+AddToMenu "Other"
++ "Other" Title
++ "Rofi" Exec rofi -show
++ "Rofi Theme Selector" Exec rofi-theme-selector
+
 DestroyMenu "Settings"
 AddToMenu "Settings"
 + "Settings" Title
-+ "ARandR" Exec arandr
++ "Adblock" Exec pkexec hblock
 + "Advanced Network Configuration" Exec nm-connection-editor
-+ "Arcolinux Welcome" Exec /usr/local/bin/arcolinux-welcome-app
++ "ArcoLinux Welcome" Exec /usr/local/bin/arcolinux-welcome-app
++ "Arcolinux Application Glade" Exec /usr/bin/arcolinux-app-glade
++ "Arcolinux Desktop Trasher" Exec /usr/local/bin/arcolinux-desktop-trasher
 + "Bluetooth" Exec blueberry
-+ "Fcitx 5 Configuration" Exec /usr/bin/fcitx5-configtool
++ "Disks" Exec gnome-disks
 + "File Manager Settings" Exec thunar-settings
-+ "LightDM GTK+ Greeter settings" Exec lightdm-gtk-greeter-settings-pkexec
-+ "Power Manager" Exec xfce4-power-manager-settings
++ "Fix Hardcoded Icons" Exec bash -c 'zenity --info --title="Fixing all hardcoded path icons" --text="An empty window means that all icons were already fixed.\n$(pkexec hardcode-fixer)" --width=500 --height=300'
++ "GParted" Exec /usr/bin/gparted
++ "Grub Customizer" Exec grub-customizer
++ "PulseAudio Volume Control" Exec pavucontrol
++ "Qt5 Settings" Exec qt5ct
++ "Quick System Info" Exec urxvt -hold -e /usr/bin/inxi -F
 + "Removable Drives and Media" Exec thunar-volman-settings
++ "System Profiler and Benchmark" Exec hardinfo
 + "Xfce Terminal Settings" Exec xfce4-terminal --preferences
++ "YAD settings" Exec yad-settings
++ "dconf Editor" Exec dconf-editor
 
 DestroyMenu "System"
 AddToMenu "System"
 + "System" Title
-+ "Add/Remove Software" Exec pamac-manager 
++ "Alacritty" Exec alacritty
 + "Avahi Zeroconf Browser" Exec /usr/bin/avahi-discover
-+ "Bulk Rename" Exec thunar --bulk-rename 
-+ "Fcitx 5" Exec /usr/bin/fcitx5
-+ "GParted" Exec /usr/bin/gparted 
-+ "Hardware Locality lstopo" Exec lstopo
-+ "Urxvt" Exec urxvt
++ "Hardinfo2" Exec hardinfo2
++ "Logs" Exec gnome-logs
++ "Manage Printing" Exec xdg-open http://localhost:631/
++ "Pace" Exec pace
++ "Print Settings" Exec system-config-printer
++ "Task Manager" Exec xfce4-taskmanager
 + "Thunar File Manager" Exec thunar 
 + "Xfce Terminal" Exec xfce4-terminal
-# + "urxvt" Exec urxvt
-# + "urxvt (client)" Exec urxvtc
-# + "urxvt (tabbed)" Exec urxvt-tabbed
++ "btop++" Exec xterm -e btop
 

@@ -76,7 +76,8 @@ super + c
 
 #archlinux-logout
 super + l
-    archlinux-logout
+#    archlinux-logout
+     betterlockscreen -l
 
 #Rofi theme selector
 # super + r

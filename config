@@ -117,7 +117,7 @@ Exec exec feh --bg-fill /usr/share/backgrounds/arcolinux/arco-wallpaper.jpg &
 Exec exec sxhkd -c $HOME/.fvwm/sxhkd/sxhkdrc &
 Exec exec dex $HOME/.config/autostart/arcolinux-welcome-app.desktop
 # Exec exec conky -c $HOME/.config/fvwm3/system-overview &
-# Exec exec nm-applet &
+Exec exec nm-applet &
 # Exec exec pamac-tray &
 Exec exec xfce4-power-manager &
 Exec exec numlockx on &
@@ -390,9 +390,9 @@ DestroyMenu MenuPrograms
 AddToMenu   MenuPrograms "" Title
 # + "Wallpapers%images/icons/wallpaper.png%" Popup BGMenu
 # + "Man Pages" Popup MenuFvwmManPages
-+ "Pager" Module FvwmPager 0 3
+# + "Pager" Module FvwmPager 0 3
 + "Thunar" Exec exec thunar
-+ "Urxvt" Exec exec urxvt
+# + "Urxvt" Exec exec urxvt
 + "Sublime" Exec exec subl
 + "Logout" Exec exec archlinux-logout
 
