@@ -112,6 +112,8 @@ AddToFunc   StartFunction
 Exec exec pkill volumeicon
 Exec exec pkill variety
 Exec exec pkill tint2
+Exec exec pkill picom
+Exec exec pkill sxhkd
 # Exec exec ~/.config/polybar/launch.sh &
 Exec exec feh --bg-fill /usr/share/backgrounds/arcolinux/arco-wallpaper.jpg &
 Exec exec sxhkd -c $HOME/.fvwm/sxhkd/sxhkdrc &
@@ -122,7 +124,7 @@ Exec exec nm-applet &
 Exec exec xfce4-power-manager &
 Exec exec numlockx on &
 Exec exec blueberry-tray &
-Exec exec picom --config $HOME/.config/fvwm3/picom.conf &
+Exec exec picom --config $HOME/.fvwm/picom.conf &
 #Exec exec picom
 Exec exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 Exec exec /usr/lib/xfce4/notifyd/xfce4-notifyd &
