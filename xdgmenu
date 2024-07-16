@@ -21,6 +21,7 @@ AddToMenu "Accessories"
 + "File Roller" Exec file-roller 
 + "Font Manager" Exec font-manager 
 + "Font Viewer" Exec /usr/lib/font-manager/font-viewer 
++ "Keyboard layout viewer" Exec kbd-layout-viewer5
 + "Kvantum Manager" Exec kvantummanager
 + "Neovim" Exec xterm -e nvim 
 + "Screenshot" Exec xfce4-screenshooter
@@ -81,6 +82,8 @@ AddToMenu "Settings"
 + "Arcolinux Desktop Trasher" Exec /usr/local/bin/arcolinux-desktop-trasher
 + "Bluetooth" Exec blueberry
 + "Disks" Exec gnome-disks
++ "Fcitx 5 Configuration" Exec /usr/bin/fcitx5-configtool
++ "Fcitx 5 Migration Wizard" Exec fcitx5-migrator
 + "File Manager Settings" Exec thunar-settings
 + "Fix Hardcoded Icons" Exec bash -c 'zenity --info --title="Fixing all hardcoded path icons" --text="An empty window means that all icons were already fixed.\n$(pkexec hardcode-fixer)" --width=500 --height=300'
 + "GParted" Exec /usr/bin/gparted
@@ -99,6 +102,7 @@ AddToMenu "System"
 + "System" Title
 + "Alacritty" Exec alacritty
 + "Avahi Zeroconf Browser" Exec /usr/bin/avahi-discover
++ "Fcitx 5" Exec /usr/bin/fcitx5
 + "Hardinfo2" Exec hardinfo2
 + "Logs" Exec gnome-logs
 + "Manage Printing" Exec xdg-open http://localhost:631/
