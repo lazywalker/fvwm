@@ -99,6 +99,9 @@ super + shift + v
 super + ctrl + Return
     alacritty
 
+super + shift + Return
+    neovide
+
 super + Return
     xfce4-terminal
 
