@@ -23,6 +23,7 @@ AddToMenu "Accessories"
 + "Font Viewer" Exec /usr/lib/font-manager/font-viewer 
 + "Keyboard layout viewer" Exec kbd-layout-viewer5
 + "Kvantum Manager" Exec kvantummanager
++ "Neovide" Exec neovide 
 + "Neovim" Exec xterm -e nvim 
 + "Screenshot" Exec xfce4-screenshooter
 + "Sofirem - Software installer/remover for Arch Linux based systems" Exec /usr/bin/sofirem
