@@ -50,6 +50,7 @@ SetEnv fvwm_images $[fvwm_home]/images
 SetEnv fvwm_themes $[fvwm_home]/themes
 #SetEnv fvwm_cache $[HOME]/.fvwm/cache/
 #SetEnv fvwm_scripts $[HOME]/.fvwm/scripts
+SetEnv fvwm_session $[fvwm_home]/session
 
 #Images folder
 SetEnv fvwm_backgrounds $[fvwm_images]/backgrounds
@@ -108,6 +109,7 @@ AddToFunc   StartFunction
 + I Module FvwmPager 0 2
 # + I Module FvwmIconMan
 # + I Module FvwmButtons Launchers
++ I Test (f $[fvwm_session]) Read $[fvwm_session]
 
 Exec exec pkill volumeicon
 Exec exec pkill variety
@@ -213,6 +215,28 @@ AddToFunc   ChangeDesk
 + I SendToModule FvwmButtons ChangeButton desk3 Colorset 10
 + I SendToModule FvwmButtons ChangeButton desk$0 Colorset 11
 
+# Function: SaveSessionFunc
+#
+# This function saves the current window positions and states.
+DestroyFunc SaveSessionFunc
+AddToFunc   SaveSessionFunc
++ I SaveSession $[fvwm_session]
+
+# Function: LoadSessionFunc
+#
+# This function restores the saved window session.
+DestroyFunc LoadSessionFunc
+AddToFunc   LoadSessionFunc
++ I Read $[fvwm_session]
+
+# Function: SaveQuitSessionFunc
+#
+# This function saves the session and then quits FVWM.
+DestroyFunc SaveQuitSessionFunc
+AddToFunc   SaveQuitSessionFunc
++ I SaveSession $[fvwm_session]
++ I Quit
+
 
 ##################################################################
 # 2: Styles
@@ -296,6 +320,9 @@ Style * BorderWidth 5, HandleWidth 5, MWMButtons, FvwmBorder, FirmBorder
 Style * Colorset 1, HilightColorset 2
 Style * BorderColorset 3, HilightBorderColorset 4
 
+# Enable Session Management for all windows
+Style * SessionMgt
+
 # Disable Icons from appearing on desktop.
 # Comment this out or use Style * Icon to get the icons back.
 # Style * !Icon
@@ -374,6 +401,8 @@ AddToMenu   MenuFvwmRoot "FVWM3" Title
 # + "Terminal" Module FvwmConsole -terminal $[infostore.terminal]
 # + "Copy Config%images/icons/conf.png%" FvwmScript FvwmScript-ConfirmCopyConfig
 + "" Nop
++ "&Session" Popup MenuSession
++ "" Nop
 + "Re&fresh%images/icons/refresh.png%" Refresh
 + "&Restart%images/icons/restart.png%" Restart
 + "&Quit%images/icons/quit.png%" Module FvwmScript FvwmScript-ConfirmQuit
@@ -382,6 +411,16 @@ AddToMenu   MenuFvwmRoot "FVWM3" Title
 PipeRead "fvwm-menu-desktop -e"
 
 read xdgmenu
+
+# Session Menu
+#
+# This menu provides session save and restore functionality
+DestroyMenu MenuSession
+AddToMenu   MenuSession "Session Management" Title
++ "Save Session" SaveSessionFunc
++ "Load Session" LoadSessionFunc
++ "" Nop
++ "Save and Quit" SaveQuitSessionFunc
 
 
 # Programs Menu
@@ -540,6 +579,7 @@ AddToMenu   MenuSendToPage
 # Alt-F1 or Menu to load the root menu and Alt-Tab for a WindowList.
 # Ctrl-F1/F2/F3/F4 will switch between the Virtual Desktops.
 # Ctrl-Shift-d to launch dmenu (Note: dmenu must be present in the system)
+# Ctrl-Alt-s to save session, Ctrl-Alt-l to load session
 #
 # Silent supresses any errors (such as keyboards with no Menu key).
 Silent Key F1 A M Menu MenuFvwmRoot
@@ -549,6 +589,8 @@ Silent Key Tab A 4 WindowList Root c c NoDeskSort, SelectOnRelease Meta_L
 Silent Key F1 A C GotoDesk 0 0
 Silent Key F2 A C GotoDesk 0 1
 Silent Key F3 A C GotoDesk 0 2
+Silent Key s A CM SaveSessionFunc
+Silent Key l A CM LoadSessionFunc
 
 # Meta + 1~9 switch to page 0~9
 Silent Key 1 A M GotoPage 0 0
