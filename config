@@ -227,7 +227,7 @@ AddToFunc   SaveSessionFunc
 # This function restores the saved window session.
 DestroyFunc LoadSessionFunc
 AddToFunc   LoadSessionFunc
-+ I Read $[fvwm_session]
++ I Test (f $[fvwm_session]) Read $[fvwm_session]
 
 # Function: SaveQuitSessionFunc
 #
