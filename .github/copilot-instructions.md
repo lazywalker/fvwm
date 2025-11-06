@@ -11,7 +11,7 @@ This repository contains configuration files for FVWM3 (F Virtual Window Manager
 - `xdgmenu` - XDG menu definitions for application launcher
 - `sxhkd/sxhkdrc` - Simple X Hotkey Daemon key bindings configuration
 - `tint2/tint2rc` - Tint2 panel configuration
-- `themes/` - FVWM themes with decorations and color schemes (e.g., milk/)
+- `themes/` - FVWM themes with decorations and color schemes (e.g., milk, classic, kawaii, etc.)
 - `images/` - Image resources organized in subdirectories:
   - `backgrounds/` - Desktop background images
   - `bgicons/` - Background icons
