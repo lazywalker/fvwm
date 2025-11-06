@@ -6,7 +6,7 @@ This repository contains configuration files for FVWM3 (F Virtual Window Manager
 
 ## File Structure
 
-- `config` - Main FVWM3 configuration file (FVWM configuration syntax)
+- `config` - Main FVWM3 configuration file (typically placed at `~/.fvwm/config`)
 - `picom.conf` - Picom compositor configuration
 - `xdgmenu` - XDG menu definitions for application launcher
 - `sxhkd/sxhkdrc` - Simple X Hotkey Daemon key bindings configuration
