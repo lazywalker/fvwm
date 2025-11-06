@@ -50,7 +50,8 @@ AddToFunc MyFunction
 ### Picom Configuration
 
 - Uses standard INI-style syntax with comments starting with `#`
-- Boolean values are `true`/`false` and lines end with semicolons
+- All configuration lines end with semicolons
+- Boolean values are `true`/`false`
 - Numeric values can be integers or floats
 
 ## Coding Conventions
@@ -59,7 +60,7 @@ AddToFunc MyFunction
 2. **Indentation**: Use consistent indentation for function definitions
 3. **Naming**: 
    - Use descriptive names for functions and variables
-   - Environment variables often prefixed with `fvwm_`
+   - Environment variables consistently prefixed with `fvwm_`
    - Functions use CamelCase (e.g., `StartFunction`, `RaiseMoveX`)
 4. **Organization**: Group related configurations together with clear section headers
 5. **Paths**: Use environment variables for paths instead of hardcoding
