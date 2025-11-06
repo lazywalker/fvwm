@@ -218,6 +218,7 @@ AddToFunc   ChangeDesk
 # Function: SaveSessionFunc
 #
 # This function saves the current window positions and states.
+# Note: Ensure ~/.fvwm directory exists and is writable.
 DestroyFunc SaveSessionFunc
 AddToFunc   SaveSessionFunc
 + I SaveSession $[fvwm_session]
@@ -232,6 +233,7 @@ AddToFunc   LoadSessionFunc
 # Function: SaveQuitSessionFunc
 #
 # This function saves the session and then quits FVWM.
+# Note: FVWM will quit even if SaveSession fails.
 DestroyFunc SaveQuitSessionFunc
 AddToFunc   SaveQuitSessionFunc
 + I SaveSession $[fvwm_session]
