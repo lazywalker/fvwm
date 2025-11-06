@@ -50,7 +50,7 @@ AddToFunc MyFunction
 ### Picom Configuration
 
 - Uses standard INI-style syntax with comments starting with `#`
-- Boolean values use `true`/`false` with semicolons
+- Boolean values are `true`/`false` and lines end with semicolons
 - Numeric values can be integers or floats
 
 ## Coding Conventions
