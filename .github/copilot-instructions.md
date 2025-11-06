@@ -9,10 +9,15 @@ This repository contains configuration files for FVWM3 (F Virtual Window Manager
 - `config` - Main FVWM3 configuration file (FVWM configuration syntax)
 - `picom.conf` - Picom compositor configuration
 - `xdgmenu` - XDG menu definitions for application launcher
-- `sxhkd/` - Simple X Hotkey Daemon key bindings
-- `tint2/` - Tint2 panel configuration
-- `themes/` - FVWM themes with decorations and color schemes
-- `images/` - Icons, backgrounds, and launcher images
+- `sxhkd/sxhkdrc` - Simple X Hotkey Daemon key bindings configuration
+- `tint2/tint2rc` - Tint2 panel configuration
+- `themes/` - FVWM themes with decorations and color schemes (e.g., milk/)
+- `images/` - Image resources organized in subdirectories:
+  - `backgrounds/` - Desktop background images
+  - `bgicons/` - Background icons
+  - `icons/` - General icons including window control icons
+  - `launchers/` - Application launcher icons
+  - `windowicons/` - Window-specific icons
 
 ## Configuration File Syntax
 
@@ -60,7 +65,7 @@ AddToFunc MyFunction
 2. **Indentation**: Use consistent indentation for function definitions
 3. **Naming**: 
    - Use descriptive names for functions and variables
-   - Environment variables consistently prefixed with `fvwm_`
+   - Environment variables typically prefixed with `fvwm_` (e.g., `fvwm_home`, `fvwm_terminal`)
    - Functions use CamelCase (e.g., `StartFunction`, `RaiseMoveX`)
 4. **Organization**: Group related configurations together with clear section headers
 5. **Paths**: Use environment variables for paths instead of hardcoding
