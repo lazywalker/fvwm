@@ -42,13 +42,24 @@ You can back up this file to preserve your layout:
 cp ~/.fvwm/session ~/.fvwm/session.backup
 ```
 
+## Requirements
+
+The session save functionality requires one of the following tools to be installed:
+- **wmctrl** (recommended) - Install with: `sudo apt install wmctrl` or `sudo pacman -S wmctrl`
+- **xprop** and **xwininfo** (fallback) - Usually pre-installed with X11
+
+To check if you have the required tools:
+```bash
+which wmctrl xprop xwininfo
+```
+
 ## Important Notes
 
 ### Application Support
 
 - **Window Positions**: All windows will have their positions and states saved
-- **Application Restart**: FVWM saves window geometry and states, but applications themselves need to support X Session Management (SM) to automatically restart
-- **SM-Aware Applications**: Applications like Firefox, Thunderbird, terminals (with proper configuration) that support SM will automatically restart when you log back in
+- **Application Restart**: FVWM saves window geometry and states, but applications themselves are NOT automatically restarted
+- **Manual Restart**: After restoring a session, you need to manually open your applications again, and they will be positioned correctly
 
 ### Best Practices
 
@@ -62,22 +73,46 @@ cp ~/.fvwm/session ~/.fvwm/session.backup
 
 ### Troubleshooting
 
+**Session file not being created:**
+- Install wmctrl: `sudo apt install wmctrl` or `sudo pacman -S wmctrl`
+- Make sure you have some windows open when saving
+- Check that `~/.fvwm/scripts/fvwm-save-session.sh` exists and is executable
+- Run manually to test: `~/.fvwm/scripts/fvwm-save-session.sh ~/.fvwm/session`
+
 **Windows not restoring to correct positions:**
 - Make sure you saved the session with Ctrl+Alt+S before logging out
-- Check that `~/.fvwm/session` file exists
-- Verify that SessionMgt is enabled in the config (it is by default)
+- Check that `~/.fvwm/session` file exists and contains window commands
+- View the session file: `cat ~/.fvwm/session`
+- Open your applications first, then press Ctrl+Alt+L to restore positions
 
 **Applications not restarting:**
-- This is expected - FVWM saves window positions, not application states
-- Use a full session manager (like xfce4-session or gnome-session) if you need automatic application restart
-- Some applications (like Firefox) have their own session restore features
+- This is expected - FVWM saves window positions only, not running applications
+- You need to manually start your applications after login
+- Once applications are running, press Ctrl+Alt+L to restore their positions
 
 ## Technical Details
 
-The session management feature uses FVWM's built-in commands:
+The session management feature uses:
 
-- `SaveSession`: Writes window information to the session file
-- `Read`: Loads and applies the saved session
-- `Style * SessionMgt`: Enables session management for all windows
+- **fvwm-save-session.sh**: A shell script that queries window information using wmctrl or xprop/xwininfo
+- **Read**: FVWM command that loads and executes the saved session file
+- **Style * SessionMgt**: Enables session management for all windows
 
-The session file contains FVWM commands that recreate window positions and states.
+The script queries all visible windows and saves their:
+- Window class/name
+- Position (X, Y coordinates)
+- Size (width, height)
+- State (maximized, iconified, sticky)
+- Desktop number
+
+The session file contains FVWM commands like:
+```fvwm
+# Window: Firefox
+Next (Firefox, CurrentDesk) ResizeMove 1024p 768p 100p 50p
+Next (Firefox, CurrentDesk) Maximize 100 100
+
+# Window: Terminal
+Next (xterm, CurrentDesk) ResizeMove 800p 600p 500p 200p
+```
+
+These commands are executed when you load the session, positioning any windows that match the saved class names.

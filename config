@@ -218,10 +218,10 @@ AddToFunc   ChangeDesk
 # Function: SaveSessionFunc
 #
 # This function saves the current window positions and states.
-# Note: Ensure ~/.fvwm directory exists and is writable.
+# Uses a shell script to query and save window information.
 DestroyFunc SaveSessionFunc
 AddToFunc   SaveSessionFunc
-+ I SaveSession $[fvwm_session]
++ I Exec exec $[fvwm_home]/scripts/fvwm-save-session.sh $[fvwm_session]
 
 # Function: LoadSessionFunc
 #
@@ -233,10 +233,10 @@ AddToFunc   LoadSessionFunc
 # Function: SaveQuitSessionFunc
 #
 # This function saves the session and then quits FVWM.
-# Note: FVWM will quit even if SaveSession fails.
+# Uses a shell script to query and save window information.
 DestroyFunc SaveQuitSessionFunc
 AddToFunc   SaveQuitSessionFunc
-+ I SaveSession $[fvwm_session]
++ I Exec exec $[fvwm_home]/scripts/fvwm-save-session.sh $[fvwm_session]
 + I Quit
 
 
