@@ -109,7 +109,9 @@ AddToFunc   StartFunction
 + I Module FvwmPager 0 2
 # + I Module FvwmIconMan
 # + I Module FvwmButtons Launchers
-+ I Test (f $[fvwm_session]) Read $[fvwm_session]
++ I Test (Init) Test (f $[fvwm_home]/session-apps) Exec exec $[fvwm_home]/scripts/fvwm-restore-session.sh $[fvwm_home]
++ I Test (Init) Schedule 3000 Test (f $[fvwm_session]) Read $[fvwm_session]
++ I Test (Restart) Test (f $[fvwm_session]) Read $[fvwm_session]
 
 Exec exec pkill volumeicon
 Exec exec pkill variety
@@ -217,8 +219,8 @@ AddToFunc   ChangeDesk
 
 # Function: SaveSessionFunc
 #
-# This function saves the current window positions and states.
-# Uses a shell script to query and save window information.
+# This function saves the current window positions, states, and application commands.
+# Uses a shell script to query and save window information and running applications.
 DestroyFunc SaveSessionFunc
 AddToFunc   SaveSessionFunc
 + I Exec exec $[fvwm_home]/scripts/fvwm-save-session.sh $[fvwm_session]
@@ -226,14 +228,16 @@ AddToFunc   SaveSessionFunc
 # Function: LoadSessionFunc
 #
 # This function restores the saved window session.
+# First restarts saved applications, then applies window positions.
 DestroyFunc LoadSessionFunc
 AddToFunc   LoadSessionFunc
-+ I Test (f $[fvwm_session]) Read $[fvwm_session]
++ I Exec exec $[fvwm_home]/scripts/fvwm-restore-session.sh $[fvwm_home]
++ I Schedule 3000 Test (f $[fvwm_session]) Read $[fvwm_session]
 
 # Function: SaveQuitSessionFunc
 #
 # This function saves the session and then quits FVWM.
-# Uses a shell script to query and save window information.
+# Uses a shell script to query and save window information and running applications.
 DestroyFunc SaveQuitSessionFunc
 AddToFunc   SaveQuitSessionFunc
 + I Exec exec $[fvwm_home]/scripts/fvwm-save-session.sh $[fvwm_session]
