@@ -18,6 +18,8 @@ echo "Restoring session applications..."
 # Read and launch applications
 APP_CLASS=""
 APP_DESKTOP=""
+APP_PAGE_X=""
+APP_PAGE_Y=""
 APP_CMD=""
 
 while IFS= read -r line; do
@@ -26,7 +28,7 @@ while IFS= read -r line; do
     [[ -z "$line" ]] && {
         # End of an app block - launch it if we have all info
         if [ -n "$APP_CLASS" ] && [ -n "$APP_CMD" ]; then
-            echo "Launching: $APP_CLASS"
+            echo "Launching: $APP_CLASS on Desktop $APP_DESKTOP, Page ($APP_PAGE_X,$APP_PAGE_Y)"
             echo "  Command: $APP_CMD"
             
             # Launch in background
@@ -41,6 +43,8 @@ while IFS= read -r line; do
         # Reset for next app
         APP_CLASS=""
         APP_DESKTOP=""
+        APP_PAGE_X=""
+        APP_PAGE_Y=""
         APP_CMD=""
         continue
     }
@@ -50,6 +54,10 @@ while IFS= read -r line; do
         APP_CLASS="${BASH_REMATCH[1]}"
     elif [[ "$line" =~ ^APP_DESKTOP=\"(.*)\"$ ]]; then
         APP_DESKTOP="${BASH_REMATCH[1]}"
+    elif [[ "$line" =~ ^APP_PAGE_X=\"(.*)\"$ ]]; then
+        APP_PAGE_X="${BASH_REMATCH[1]}"
+    elif [[ "$line" =~ ^APP_PAGE_Y=\"(.*)\"$ ]]; then
+        APP_PAGE_Y="${BASH_REMATCH[1]}"
     elif [[ "$line" =~ ^APP_CMD=\"(.*)\"$ ]]; then
         APP_CMD="${BASH_REMATCH[1]}"
     fi
@@ -57,7 +65,7 @@ done < "$APP_LIST_FILE"
 
 # Handle last app if file doesn't end with empty line
 if [ -n "$APP_CLASS" ] && [ -n "$APP_CMD" ]; then
-    echo "Launching: $APP_CLASS"
+    echo "Launching: $APP_CLASS on Desktop $APP_DESKTOP, Page ($APP_PAGE_X,$APP_PAGE_Y)"
     echo "  Command: $APP_CMD"
     (
         eval "$APP_CMD" &>/dev/null &

@@ -32,6 +32,10 @@ EOF
 # Track saved applications to avoid duplicates
 declare -A saved_apps
 
+# Get screen dimensions to calculate page
+SCREEN_WIDTH=$(xdpyinfo | grep dimensions | awk '{print $2}' | cut -d'x' -f1)
+SCREEN_HEIGHT=$(xdpyinfo | grep dimensions | awk '{print $2}' | cut -d'x' -f2)
+
 # Check if wmctrl is available
 if command -v wmctrl &> /dev/null; then
     # Use wmctrl to get window information
@@ -44,6 +48,18 @@ if command -v wmctrl &> /dev/null; then
         # Get window class/resource
         class=$(xprop -id "$win_id" WM_CLASS 2>/dev/null | sed 's/.*"\(.*\)", "\(.*\)".*/\2/' | head -1)
         [ -z "$class" ] && class="$title"
+        
+        # Calculate page from window position
+        # Page X = window_x / screen_width
+        # Page Y = window_y / screen_height
+        page_x=0
+        page_y=0
+        if [ -n "$SCREEN_WIDTH" ] && [ "$SCREEN_WIDTH" -gt 0 ]; then
+            page_x=$((x / SCREEN_WIDTH))
+        fi
+        if [ -n "$SCREEN_HEIGHT" ] && [ "$SCREEN_HEIGHT" -gt 0 ]; then
+            page_y=$((y / SCREEN_HEIGHT))
+        fi
         
         # Get the command that started this application
         if [ -n "$pid" ] && [ "$pid" != "0" ]; then
@@ -58,6 +74,8 @@ if command -v wmctrl &> /dev/null; then
                 echo "# Application: $class (PID: $pid)" >> "$APP_LIST_FILE"
                 echo "APP_CLASS=\"$class\"" >> "$APP_LIST_FILE"
                 echo "APP_DESKTOP=\"$desktop\"" >> "$APP_LIST_FILE"
+                echo "APP_PAGE_X=\"$page_x\"" >> "$APP_LIST_FILE"
+                echo "APP_PAGE_Y=\"$page_y\"" >> "$APP_LIST_FILE"
                 echo "APP_CMD=\"$cmdline\"" >> "$APP_LIST_FILE"
                 echo "" >> "$APP_LIST_FILE"
                 saved_apps[$class]=1
@@ -91,24 +109,33 @@ if command -v wmctrl &> /dev/null; then
             sticky="Stick"
         fi
         
+        # Calculate position relative to page
+        # When restoring, window should be positioned relative to its page
+        pos_x=$((x % SCREEN_WIDTH))
+        pos_y=$((y % SCREEN_HEIGHT))
+        
         # Write restore commands
-        echo "# Window: $title (Class: $class)" >> "$SESSION_FILE"
-        echo "Next ($class, CurrentDesk) ResizeMove ${w}p ${h}p ${x}p ${y}p" >> "$SESSION_FILE"
+        echo "# Window: $title (Class: $class, Desktop: $desktop, Page: ${page_x},${page_y})" >> "$SESSION_FILE"
+        
+        # Move to correct desktop and page first
+        if [ "$desktop" != "-1" ]; then
+            echo "Next ($class) GotoDesk 0 $desktop" >> "$SESSION_FILE"
+            echo "Next ($class) GotoPage $page_x $page_y" >> "$SESSION_FILE"
+        fi
+        
+        # Now position the window
+        echo "Next ($class) ResizeMove ${w}p ${h}p ${pos_x}p ${pos_y}p" >> "$SESSION_FILE"
         
         if [ -n "$maximized" ]; then
-            echo "Next ($class, CurrentDesk) Maximize $maximized" >> "$SESSION_FILE"
+            echo "Next ($class) Maximize $maximized" >> "$SESSION_FILE"
         fi
         
         if [ -n "$iconified" ]; then
-            echo "Next ($class, CurrentDesk) Iconify" >> "$SESSION_FILE"
+            echo "Next ($class) Iconify" >> "$SESSION_FILE"
         fi
         
         if [ -n "$sticky" ]; then
-            echo "Next ($class, CurrentDesk) Stick" >> "$SESSION_FILE"
-        fi
-        
-        if [ "$desktop" != "-1" ] && [ "$desktop" != "0" ]; then
-            echo "Next ($class, CurrentDesk) MoveToDesk 0 $desktop" >> "$SESSION_FILE"
+            echo "Next ($class) Stick" >> "$SESSION_FILE"
         fi
         
         echo "" >> "$SESSION_FILE"
@@ -140,6 +167,24 @@ else
             continue
         fi
         
+        # Get desktop number
+        desktop=$(xprop -id "$win_id" _NET_WM_DESKTOP 2>/dev/null | awk '{print $3}')
+        [ -z "$desktop" ] && desktop="0"
+        
+        # Calculate page from window position
+        page_x=0
+        page_y=0
+        if [ -n "$SCREEN_WIDTH" ] && [ "$SCREEN_WIDTH" -gt 0 ]; then
+            page_x=$((x / SCREEN_WIDTH))
+        fi
+        if [ -n "$SCREEN_HEIGHT" ] && [ "$SCREEN_HEIGHT" -gt 0 ]; then
+            page_y=$((y / SCREEN_HEIGHT))
+        fi
+        
+        # Calculate position relative to page
+        pos_x=$((x % SCREEN_WIDTH))
+        pos_y=$((y % SCREEN_HEIGHT))
+        
         # Get window state
         state=$(xprop -id "$win_id" _NET_WM_STATE 2>/dev/null)
         
@@ -166,19 +211,27 @@ else
         fi
         
         # Write restore commands
-        echo "# Window: $title" >> "$SESSION_FILE"
-        echo "Next ($class, CurrentDesk) ResizeMove ${w}p ${h}p ${x}p ${y}p" >> "$SESSION_FILE"
+        echo "# Window: $title (Class: $class, Desktop: $desktop, Page: ${page_x},${page_y})" >> "$SESSION_FILE"
+        
+        # Move to correct desktop and page first
+        if [ "$desktop" != "-1" ]; then
+            echo "Next ($class) GotoDesk 0 $desktop" >> "$SESSION_FILE"
+            echo "Next ($class) GotoPage $page_x $page_y" >> "$SESSION_FILE"
+        fi
+        
+        # Now position the window
+        echo "Next ($class) ResizeMove ${w}p ${h}p ${pos_x}p ${pos_y}p" >> "$SESSION_FILE"
         
         if [ -n "$maximized" ]; then
-            echo "Next ($class, CurrentDesk) Maximize $maximized" >> "$SESSION_FILE"
+            echo "Next ($class) Maximize $maximized" >> "$SESSION_FILE"
         fi
         
         if [ -n "$iconified" ]; then
-            echo "Next ($class, CurrentDesk) Iconify" >> "$SESSION_FILE"
+            echo "Next ($class) Iconify" >> "$SESSION_FILE"
         fi
         
         if [ -n "$sticky" ]; then
-            echo "Next ($class, CurrentDesk) Stick" >> "$SESSION_FILE"
+            echo "Next ($class) Stick" >> "$SESSION_FILE"
         fi
         
         echo "" >> "$SESSION_FILE"

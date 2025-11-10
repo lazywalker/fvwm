@@ -8,7 +8,7 @@ This FVWM configuration now supports full session saving and restoration, allowi
 - **Automatic Application Restart**: Applications are automatically restarted on next login
 - **Save Window Positions**: Save the exact position of all open windows
 - **Save Window States**: Save window states (iconified, maximized, shaded, sticky)
-- **Save Desk and Page**: Remember which virtual desktop and page each window was on
+- **Save Desktop and Page**: Remember which virtual desktop (0=Main, 1=Code, 2=Play) and which page (0-8 in 3x3 grid) each window was on
 - **Automatic Restore**: Applications and windows are automatically restored on FVWM startup
 - **Manual Control**: Save and load sessions manually at any time
 
@@ -75,14 +75,18 @@ which wmctrl xprop xwininfo
 
 1. **Save Session** (Ctrl+Alt+S):
    - Queries all running windows and their processes
+   - Calculates which page each window is on (based on window position and screen dimensions)
    - Extracts the command line that started each application
-   - Saves application commands to `~/.fvwm/session-apps`
-   - Saves window positions to `~/.fvwm/session`
+   - Saves application commands with desktop and page info to `~/.fvwm/session-apps`
+   - Saves window positions with desktop and page info to `~/.fvwm/session`
 
 2. **Restore Session** (On Login):
    - Reads `~/.fvwm/session-apps` and restarts each application
    - Waits for windows to appear
-   - Reads `~/.fvwm/session` and positions windows correctly
+   - Reads `~/.fvwm/session` which:
+     - Uses `GotoDesk` to switch to the correct desktop
+     - Uses `GotoPage` to switch to the correct page
+     - Positions windows at their exact location on that page
 
 ### Best Practices
 
@@ -141,13 +145,15 @@ The script queries all visible windows and saves:
    - Window class/name
    - Process ID (PID)
    - Command line that started the application
-   - Desktop number
+   - Desktop number (0, 1, 2)
+   - Page X coordinate (0-2 in 3x3 grid)
+   - Page Y coordinate (0-2 in 3x3 grid)
 
 2. **Window Geometry** (to `session`):
-   - Position (X, Y coordinates)
+   - Position (X, Y coordinates relative to page)
    - Size (width, height)
    - State (maximized, iconified, sticky)
-   - Desktop/page assignment
+   - Desktop and page assignment
 
 ### Application List Format
 
@@ -156,11 +162,15 @@ The `session-apps` file contains:
 # Application: Firefox (PID: 12345)
 APP_CLASS="Firefox"
 APP_DESKTOP="0"
+APP_PAGE_X="1"
+APP_PAGE_Y="0"
 APP_CMD="/usr/bin/firefox"
 
 # Application: xterm (PID: 12346)
 APP_CLASS="xterm"
 APP_DESKTOP="1"
+APP_PAGE_X="2"
+APP_PAGE_Y="1"
 APP_CMD="/usr/bin/xterm"
 ```
 
@@ -168,12 +178,16 @@ APP_CMD="/usr/bin/xterm"
 
 The `session` file contains FVWM commands:
 ```fvwm
-# Window: Firefox (Class: Firefox)
-Next (Firefox, CurrentDesk) ResizeMove 1024p 768p 100p 50p
-Next (Firefox, CurrentDesk) Maximize 100 100
+# Window: Firefox (Class: Firefox, Desktop: 0, Page: 1,0)
+Next (Firefox) GotoDesk 0 0
+Next (Firefox) GotoPage 1 0
+Next (Firefox) ResizeMove 1024p 768p 100p 50p
+Next (Firefox) Maximize 100 100
 
-# Window: Terminal (Class: xterm)
-Next (xterm, CurrentDesk) ResizeMove 800p 600p 500p 200p
+# Window: Terminal (Class: xterm, Desktop: 1, Page: 2,1)
+Next (xterm) GotoDesk 0 1
+Next (xterm) GotoPage 2 1
+Next (xterm) ResizeMove 800p 600p 500p 200p
 ```
 
 ### Restore Process
@@ -182,5 +196,8 @@ On login or when loading a session:
 1. `fvwm-restore-session.sh` reads `session-apps`
 2. Launches each saved application in the background
 3. Waits 2-3 seconds for windows to appear
-4. FVWM reads `session` file and positions windows using the `Next` command
-5. Windows that match the saved class names are positioned correctly
+4. FVWM reads `session` file and for each window:
+   - Uses `Next (ClassName) GotoDesk 0 N` to switch to the correct desktop
+   - Uses `Next (ClassName) GotoPage X Y` to switch to the correct page
+   - Uses `Next (ClassName) ResizeMove` to position the window on that page
+5. All windows are restored to their exact desktop, page, and position
