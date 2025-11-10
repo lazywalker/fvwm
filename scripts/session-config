@@ -1,0 +1,16 @@
+#!/bin/bash
+# FVWM Session Configuration
+# This file defines the desktop and page layout for session management
+# Update these values to match your FVWM configuration
+
+# Number of desktops (e.g., 3 for Main, Code, Play)
+# This should match the number of DesktopName definitions in your config
+FVWM_NUM_DESKTOPS=3
+
+# Page grid dimensions (e.g., 3x3 means 9 pages per desktop)
+# This should match the DesktopSize setting in your config (e.g., DesktopSize 3x3)
+FVWM_PAGE_COLS=3
+FVWM_PAGE_ROWS=3
+
+# Export variables so they're available to child processes
+export FVWM_NUM_DESKTOPS FVWM_PAGE_COLS FVWM_PAGE_ROWS
