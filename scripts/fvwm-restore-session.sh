@@ -6,6 +6,17 @@ SESSION_DIR="${1:-$HOME/.fvwm}"
 APP_LIST_FILE="${SESSION_DIR}/session-apps"
 SESSION_FILE="${SESSION_DIR}/session"
 
+# Load session configuration for future use
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+if [ -f "$SCRIPT_DIR/session-config" ]; then
+    source "$SCRIPT_DIR/session-config"
+else
+    # Fallback to default values if config file doesn't exist
+    FVWM_NUM_DESKTOPS=3
+    FVWM_PAGE_COLS=3
+    FVWM_PAGE_ROWS=3
+fi
+
 # Check if application list exists
 if [ ! -f "$APP_LIST_FILE" ]; then
     echo "No saved applications found at: $APP_LIST_FILE"

@@ -51,6 +51,26 @@ cp ~/.fvwm/session ~/.fvwm/session.backup
 cp ~/.fvwm/session-apps ~/.fvwm/session-apps.backup
 ```
 
+## Configuration
+
+The session management feature can be configured to match your desktop layout. Edit the `~/.fvwm/scripts/session-config` file to set:
+
+- **FVWM_NUM_DESKTOPS**: Number of virtual desktops (e.g., 3 for Main, Code, Play)
+- **FVWM_PAGE_COLS**: Number of page columns in the page grid (e.g., 3 for a 3x3 grid)
+- **FVWM_PAGE_ROWS**: Number of page rows in the page grid (e.g., 3 for a 3x3 grid)
+
+**Example configuration:**
+```bash
+# For 3 desktops with a 3x3 page grid (9 pages per desktop)
+FVWM_NUM_DESKTOPS=3
+FVWM_PAGE_COLS=3
+FVWM_PAGE_ROWS=3
+```
+
+**Important:** These values must match your FVWM configuration:
+- `FVWM_NUM_DESKTOPS` should match the number of `DesktopName` definitions in your config
+- `FVWM_PAGE_COLS` and `FVWM_PAGE_ROWS` should match your `DesktopSize` setting (e.g., `DesktopSize 3x3`)
+
 ## Requirements
 
 The session save functionality requires one of the following tools to be installed:
@@ -74,8 +94,10 @@ which wmctrl xprop xwininfo
 ### How It Works
 
 1. **Save Session** (Ctrl+Alt+S):
+   - Loads configuration from `~/.fvwm/scripts/session-config`
    - Queries all running windows and their processes
    - Calculates which page each window is on (based on window position and screen dimensions)
+   - Validates desktop and page numbers against configured limits
    - Extracts the command line that started each application
    - Saves application commands with desktop and page info to `~/.fvwm/session-apps`
    - Saves window positions with desktop and page info to `~/.fvwm/session`
@@ -108,6 +130,7 @@ which wmctrl xprop xwininfo
 - Install wmctrl: `sudo apt install wmctrl` or `sudo pacman -S wmctrl`
 - Make sure you have some windows open when saving
 - Check that `~/.fvwm/scripts/fvwm-save-session.sh` exists and is executable
+- Verify your configuration matches your FVWM setup in `~/.fvwm/scripts/session-config`
 - Run manually to test: `~/.fvwm/scripts/fvwm-save-session.sh ~/.fvwm/session`
 
 **Windows not restoring to correct positions:**
@@ -122,6 +145,12 @@ which wmctrl xprop xwininfo
 - Make sure scripts are executable: `chmod +x ~/.fvwm/scripts/*.sh`
 - Test restore manually: `~/.fvwm/scripts/fvwm-restore-session.sh ~/.fvwm`
 - Some applications may need special handling (see below)
+
+**Configuration mismatch:**
+- If windows restore to wrong desktops/pages, check `~/.fvwm/scripts/session-config`
+- The configuration values must match your FVWM config (`DesktopName` count and `DesktopSize`)
+- Example: If config has `DesktopSize 3x3`, set `FVWM_PAGE_COLS=3` and `FVWM_PAGE_ROWS=3`
+- After changing the configuration, save a new session with the corrected settings
 
 **Known Limitations:**
 - Applications started with complex shell commands may not restore correctly

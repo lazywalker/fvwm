@@ -6,6 +6,19 @@ SESSION_FILE="${1:-$HOME/.fvwm/session}"
 SESSION_DIR="$(dirname "$SESSION_FILE")"
 APP_LIST_FILE="${SESSION_DIR}/session-apps"
 
+# Load session configuration
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+if [ -f "$SCRIPT_DIR/session-config" ]; then
+    source "$SCRIPT_DIR/session-config"
+    echo "Using session configuration: $FVWM_NUM_DESKTOPS desktops, ${FVWM_PAGE_COLS}x${FVWM_PAGE_ROWS} page grid"
+else
+    # Fallback to default values if config file doesn't exist
+    FVWM_NUM_DESKTOPS=3
+    FVWM_PAGE_COLS=3
+    FVWM_PAGE_ROWS=3
+    echo "Using default configuration: $FVWM_NUM_DESKTOPS desktops, ${FVWM_PAGE_COLS}x${FVWM_PAGE_ROWS} page grid"
+fi
+
 # Create session directory if it doesn't exist
 mkdir -p "$SESSION_DIR"
 
@@ -36,6 +49,11 @@ declare -A saved_apps
 SCREEN_WIDTH=$(xdpyinfo | grep dimensions | awk '{print $2}' | cut -d'x' -f1)
 SCREEN_HEIGHT=$(xdpyinfo | grep dimensions | awk '{print $2}' | cut -d'x' -f2)
 
+# Calculate total desktop dimensions (screen size * page grid)
+# Each page is one screen width/height
+DESKTOP_WIDTH=$((SCREEN_WIDTH * FVWM_PAGE_COLS))
+DESKTOP_HEIGHT=$((SCREEN_HEIGHT * FVWM_PAGE_ROWS))
+
 # Check if wmctrl is available
 if command -v wmctrl &> /dev/null; then
     # Use wmctrl to get window information
@@ -50,15 +68,27 @@ if command -v wmctrl &> /dev/null; then
         [ -z "$class" ] && class="$title"
         
         # Calculate page from window position
-        # Page X = window_x / screen_width
-        # Page Y = window_y / screen_height
+        # Page X = window_x / screen_width (capped to configured grid)
+        # Page Y = window_y / screen_height (capped to configured grid)
         page_x=0
         page_y=0
         if [ -n "$SCREEN_WIDTH" ] && [ "$SCREEN_WIDTH" -gt 0 ]; then
             page_x=$((x / SCREEN_WIDTH))
+            # Cap to configured page grid
+            [ "$page_x" -ge "$FVWM_PAGE_COLS" ] && page_x=$((FVWM_PAGE_COLS - 1))
+            [ "$page_x" -lt 0 ] && page_x=0
         fi
         if [ -n "$SCREEN_HEIGHT" ] && [ "$SCREEN_HEIGHT" -gt 0 ]; then
             page_y=$((y / SCREEN_HEIGHT))
+            # Cap to configured page grid
+            [ "$page_y" -ge "$FVWM_PAGE_ROWS" ] && page_y=$((FVWM_PAGE_ROWS - 1))
+            [ "$page_y" -lt 0 ] && page_y=0
+        fi
+        
+        # Validate desktop number against configuration
+        if [ "$desktop" != "-1" ]; then
+            [ "$desktop" -ge "$FVWM_NUM_DESKTOPS" ] && desktop=$((FVWM_NUM_DESKTOPS - 1))
+            [ "$desktop" -lt 0 ] && desktop=0
         fi
         
         # Get the command that started this application
@@ -176,9 +206,21 @@ else
         page_y=0
         if [ -n "$SCREEN_WIDTH" ] && [ "$SCREEN_WIDTH" -gt 0 ]; then
             page_x=$((x / SCREEN_WIDTH))
+            # Cap to configured page grid
+            [ "$page_x" -ge "$FVWM_PAGE_COLS" ] && page_x=$((FVWM_PAGE_COLS - 1))
+            [ "$page_x" -lt 0 ] && page_x=0
         fi
         if [ -n "$SCREEN_HEIGHT" ] && [ "$SCREEN_HEIGHT" -gt 0 ]; then
             page_y=$((y / SCREEN_HEIGHT))
+            # Cap to configured page grid
+            [ "$page_y" -ge "$FVWM_PAGE_ROWS" ] && page_y=$((FVWM_PAGE_ROWS - 1))
+            [ "$page_y" -lt 0 ] && page_y=0
+        fi
+        
+        # Validate desktop number against configuration
+        if [ "$desktop" != "-1" ]; then
+            [ "$desktop" -ge "$FVWM_NUM_DESKTOPS" ] && desktop=$((FVWM_NUM_DESKTOPS - 1))
+            [ "$desktop" -lt 0 ] && desktop=0
         fi
         
         # Calculate position relative to page
