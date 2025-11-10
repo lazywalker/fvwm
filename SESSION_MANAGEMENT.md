@@ -37,7 +37,7 @@ Right-click on the desktop to open the root menu, then:
 2. Choose from:
    - **Save Session**: Save current window layout
    - **Load Session**: Restore previously saved session
-   - **Save and Quit**: Save session and exit FVWM
+   - **Save and Quit**: Save session completely, then exit FVWM (waits for save to finish)
 
 ### Session File Locations
 
@@ -134,6 +134,7 @@ which wmctrl xprop xwininfo
 The session management feature uses:
 
 - **fvwm-save-session.sh**: Queries window information and application commands using wmctrl or xprop/xwininfo
+- **fvwm-save-and-quit.sh**: Wrapper that saves session completely before quitting FVWM
 - **fvwm-restore-session.sh**: Restarts saved applications from their command lines
 - **Read**: FVWM command that loads and executes the saved session file
 - **Style * SessionMgt**: Enables session management for all windows

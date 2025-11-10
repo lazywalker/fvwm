@@ -237,11 +237,10 @@ AddToFunc   LoadSessionFunc
 # Function: SaveQuitSessionFunc
 #
 # This function saves the session and then quits FVWM.
-# Uses a shell script to query and save window information and running applications.
+# Uses a wrapper script that saves session first, then quits FVWM after completion.
 DestroyFunc SaveQuitSessionFunc
 AddToFunc   SaveQuitSessionFunc
-+ I Exec exec $[fvwm_home]/scripts/fvwm-save-session.sh $[fvwm_session]
-+ I Quit
++ I Exec exec $[fvwm_home]/scripts/fvwm-save-and-quit.sh $[fvwm_session]
 
 
 ##################################################################
