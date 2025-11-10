@@ -201,8 +201,8 @@ ctrl + alt + r
   	rofi-theme-selector
 
 #Spotify
-ctrl + alt + s
-   spotify
+#ctrl + alt + s
+#   spotify
 
 #alacritty
 ctrl + alt + Return
